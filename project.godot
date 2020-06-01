@@ -1,0 +1,50 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node",
+"class": "Terrain",
+"language": "GDScript",
+"path": "res://terrain.gd"
+}, {
+"base": "Node",
+"class": "TerrainGenerator",
+"language": "GDScript",
+"path": "res://terrain_generator.gd"
+}, {
+"base": "Node",
+"class": "TerrainGeneratorConfig",
+"language": "GDScript",
+"path": "res://terrain_generator_config.gd"
+}, {
+"base": "Node2D",
+"class": "TerrainSample",
+"language": "GDScript",
+"path": "res://TerrainSample.gd"
+} ]
+_global_script_class_icons={
+"Terrain": "",
+"TerrainGenerator": "",
+"TerrainGeneratorConfig": "",
+"TerrainSample": ""
+}
+
+[application]
+
+config/name="finite-terrain-generation"
+run/main_scene="res://TerrainSample.tscn"
+config/icon="res://icon.png"
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"
