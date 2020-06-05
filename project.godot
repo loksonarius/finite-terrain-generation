@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "PointTreeNode",
+"language": "GDScript",
+"path": "res://point_tree_node.gd"
+}, {
+"base": "Node",
 "class": "Terrain",
 "language": "GDScript",
 "path": "res://terrain.gd"
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://TerrainSample.gd"
 } ]
 _global_script_class_icons={
+"PointTreeNode": "",
 "Terrain": "",
 "TerrainGenerator": "",
 "TerrainGeneratorConfig": "",
