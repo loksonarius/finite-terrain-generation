@@ -14,9 +14,19 @@ var children: Array = []
 var value: Vector2 = Vector2.ZERO
 
 ## Private
-## OnReady
 
-## Virtual Methods
 ## Public Methods
+func node_paths() -> Array:
+	var paths := []
+
+	for child in children:
+		var node : PointTreeNode = child as PointTreeNode
+		if node == null:
+			continue
+		paths.append([value, child.value])
+		paths += node.node_paths()
+
+	return paths
+
 ## Private Methods
 

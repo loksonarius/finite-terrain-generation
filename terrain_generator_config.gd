@@ -14,6 +14,7 @@ var width: int = 20
 var height: int = 10
 var biome_ids: Array = [0]
 var max_river_sources: int = 5
+var river_smoothing_factor: int = 2
 var max_lakes: int = 1
 var max_biome_bubbles: int = 3
 
