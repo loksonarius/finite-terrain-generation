@@ -198,9 +198,46 @@ static func _render_rivers(map: Array, width: int, height: int, river: PointTree
 		assert(start != null)
 		assert(end != null)
 
-		start = start.snapped(Vector2.ONE)
-		end = end.snapped(Vector2.ONE)
-		var start_tile : Terrain = map[start.y][start.x] as Terrain
-		var end_tile : Terrain = map[end.y][end.x] as Terrain
-		start_tile.has_water = true
-		end_tile.has_water = true
+		var points := _rasterize_line(start, end)
+		for point in points:
+			var tile : Terrain = map[point.y][point.x] as Terrain
+			if tile == null:
+				continue
+			tile.has_water = true
+
+#		start = start.snapped(Vector2.ONE)
+#		end = end.snapped(Vector2.ONE)
+#		var start_tile : Terrain = map[start.y][start.x] as Terrain
+#		var end_tile : Terrain = map[end.y][end.x] as Terrain
+#		start_tile.has_water = true
+#		end_tile.has_water = true
+
+static func _rasterize_line(start: Vector2, end: Vector2) -> Array:
+	var snap := Vector2.ONE
+	start = start.snapped(snap)
+	end = end.snapped(snap)
+	var y_steps := (abs(end.y - start.y) / snap.y) as int
+	var x_steps := (abs(end.x - start.x) / snap.x) as int
+	var points := [start]
+
+	if y_steps < x_steps:
+		var x := min(start.x, end.x)
+		var s := min(start.y, end.y)
+		var e := max(start.y, end.y)
+		for y in range(s, e, snap.y):
+			for _i in range(x_steps):
+				var point = Vector2(x, y)
+				points.append(point)
+				x += snap.x
+	else:
+		var y := min(start.y, end.y)
+		var s := min(start.x, end.x)
+		var e := max(start.x, end.x)
+		for x in range(s, e, snap.x):
+			for _i in range(y_steps):
+				var point = Vector2(x, y)
+				points.append(point)
+				y += snap.y
+
+	points += [end]
+	return points
