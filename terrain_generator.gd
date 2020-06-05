@@ -15,10 +15,12 @@ extends Node
 
 ## Public Methods
 static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
+	# validate config, use config seed, generate blank terrain map
 	assert(_is_config_valid(config))
 	seed(config.terrain_seed)
 	var map := _new_terrain_map(config.width, config.height)
 
+	# choose random points along the northern map wall for sources
 	var max_count := config.max_river_sources
 	var northwest := Vector2(config.width - 1, 0)
 	var northeast := Vector2(0, 0)
@@ -26,6 +28,8 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	for source in sources:
 		map[source.y as int][source.x as int].has_water = true
 
+	# choose random points along the northern map wall for exits
+	# ensuring we have at most as many exits as sources
 	var river_trees := []
 	var source_count := len(sources)
 	var source_dist := []
@@ -34,12 +38,15 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	var southwest := Vector2(config.width - 1, config.height - 1)
 	var southeast := Vector2(0, config.height - 1)
 	var exits := _generate_edge_points(max_count, southwest, southeast)
+	source_count -= len(exits)
 	for exit in exits:
 		map[exit.y as int][exit.x as int].has_water = true
-		river_trees.append(exit)
+		var node := PointTreeNode.new()
+		node.value = exit
+		river_trees.append(node)
 		source_dist.append(1)
 
-	source_count -= len(exits)
+	# decide how many sources will be assigned to each exit
 	var exit := len(exits) - 1
 	while source_count > 0:
 		var tap := 1 + (randi() % source_count)
@@ -49,6 +56,18 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 
 	for d in source_dist:
 		print(d)
+
+	# add assgined sources to their exit's tree
+	var source_offset := 0
+	for exit_idx in range(len(exits)):
+		for sidx in range(source_offset, source_offset + source_dist[exit_idx]):
+			var node : PointTreeNode = river_trees[exit_idx] as PointTreeNode
+			var child := PointTreeNode.new()
+			child.value = sources[sidx]
+			node.children.append(child)
+		source_offset += source_dist[exit_idx]
+
+	# create join-points for rivers with mulpitle sources feeding into an exit
 
 	return map
 
@@ -74,17 +93,16 @@ static func _is_config_valid(config: TerrainGeneratorConfig) -> bool:
 static func _new_terrain_map(width: int, height: int) -> Array:
 	var result := []
 
-	for i in range(height):
+	for _i in range(height):
 		result.append([])
 
 	for row in result:
-		for i in range(width):
+		for _i in range(width):
 			row.append(Terrain.new())
 
 	return result
 
 static func _generate_edge_points(max_count: int, start: Vector2, end: Vector2) -> Array:
-	var threshold := 0.01
 	var dir := (end - start).normalized()
 	var variance := 0.20
 
@@ -93,7 +111,7 @@ static func _generate_edge_points(max_count: int, start: Vector2, end: Vector2) 
 	var x := start
 	print("%s %d %f %s" % [dir, count, seg_len, x])
 	var points := [x]
-	for i in range(count):
+	for _i in range(count - 1):
 		var r := rand_range(1.0 - variance, 1.0 + variance)
 		x = lerp(x, x + dir * seg_len, r)
 		points.append(x)
