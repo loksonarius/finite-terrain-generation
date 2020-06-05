@@ -90,7 +90,7 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 		var node : PointTreeNode = item as PointTreeNode
 		if node == null:
 			continue
-		_render_rivers(map, config.width, config.height, node)
+		_render_rivers(map, node)
 
 	return map
 
@@ -189,7 +189,7 @@ static func _smooth_paths(tree: PointTreeNode) -> void:
 	tree.children = new_children
 
 
-static func _render_rivers(map: Array, width: int, height: int, river: PointTreeNode) -> void:
+static func _render_rivers(map: Array, river: PointTreeNode) -> void:
 	var paths := river.node_paths()
 	for path in paths:
 		assert(len(path) == 2)
@@ -204,13 +204,6 @@ static func _render_rivers(map: Array, width: int, height: int, river: PointTree
 			if tile == null:
 				continue
 			tile.has_water = true
-
-#		start = start.snapped(Vector2.ONE)
-#		end = end.snapped(Vector2.ONE)
-#		var start_tile : Terrain = map[start.y][start.x] as Terrain
-#		var end_tile : Terrain = map[end.y][end.x] as Terrain
-#		start_tile.has_water = true
-#		end_tile.has_water = true
 
 static func _rasterize_line(start: Vector2, end: Vector2) -> Array:
 	var snap := Vector2.ONE
