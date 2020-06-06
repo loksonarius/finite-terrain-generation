@@ -49,13 +49,12 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	# decide how many sources will be assigned to each exit
 	var exit := len(exits) - 1
 	while source_count > 0:
+		if exit < 0:
+			exit += len(exits)
 		var tap := 1 + (randi() % source_count)
 		source_dist[exit] += tap
 		exit -= 1
 		source_count -= tap
-
-	for d in source_dist:
-		print(d)
 
 	# add assgined sources to their exit's tree
 	var source_offset := 0
@@ -117,12 +116,15 @@ static func _is_config_valid(config: TerrainGeneratorConfig) -> bool:
 
 static func _new_terrain_map(width: int, height: int) -> Array:
 	var result := []
+	# because I can't be bothered to constantly check if we're
+	# hitting them edges at each point in the process
+	var breathing_room := 2
 
-	for _i in range(height):
+	for _i in range(height + breathing_room):
 		result.append([])
 
 	for row in result:
-		for _i in range(width):
+		for _i in range(width + breathing_room):
 			row.append(Terrain.new())
 
 	return result
@@ -135,10 +137,9 @@ static func _generate_edge_points(max_count: int, start: Vector2, end: Vector2) 
 	var count := 1 + randi() % max_count
 	var seg_len := (end - start).length() / count
 	var x := start
-	print("%s %d %f %s" % [dir, count, seg_len, x])
-	var points := [x]
-	for _i in range(count - 1):
-		var r := rand_range(1.0 - variance, 1.0 + variance)
+	var points := []
+	for _i in range(count):
+		var r := rand_range(1.0 - variance, 1.0)
 		x = lerp(x, x + dir * seg_len, r)
 		points.append(x)
 
@@ -146,8 +147,15 @@ static func _generate_edge_points(max_count: int, start: Vector2, end: Vector2) 
 
 
 static func _join_sources(tree: PointTreeNode, height: int) -> void:
-	# join node pairs while the current node has more than 1 child
-	while len(tree.children) > 1:
+	var children := []
+
+	# join node pairs while the current node has potential child pairs
+	while len(tree.children) > 0:
+		# if we only have one child left, stop joins
+		if len(tree.children) == 1:
+			children.append(tree.children.pop_front())
+			continue
+
 		var left : PointTreeNode = tree.children.pop_front() as PointTreeNode
 		var right : PointTreeNode = tree.children.pop_front() as PointTreeNode
 		assert(left != null)
@@ -156,7 +164,7 @@ static func _join_sources(tree: PointTreeNode, height: int) -> void:
 		# find a suitable join location for the new joining node
 		var midpoint := left.value.linear_interpolate(right.value, 0.5)
 		var lower_y = max(left.value.y, right.value.y)
-		midpoint.y = (height - lower_y) / 2.0
+		midpoint.y = (tree.value.y - lower_y) / 2.0
 
 		# move joined children under new joining node
 		# and replace their spot with the new join node
@@ -164,7 +172,9 @@ static func _join_sources(tree: PointTreeNode, height: int) -> void:
 		new_node.value = midpoint
 		new_node.children.append(left)
 		new_node.children.append(right)
-		tree.children.push_front(new_node)
+		children.append(new_node)
+
+	tree.children = children
 
 
 static func _smooth_paths(tree: PointTreeNode) -> void:
@@ -209,28 +219,13 @@ static func _rasterize_line(start: Vector2, end: Vector2) -> Array:
 	var snap := Vector2.ONE
 	start = start.snapped(snap)
 	end = end.snapped(snap)
-	var y_steps := (abs(end.y - start.y) / snap.y) as int
-	var x_steps := (abs(end.x - start.x) / snap.x) as int
 	var points := [start]
 
-	if y_steps < x_steps:
-		var x := min(start.x, end.x)
-		var s := min(start.y, end.y)
-		var e := max(start.y, end.y)
-		for y in range(s, e, snap.y):
-			for _i in range(x_steps):
-				var point = Vector2(x, y)
-				points.append(point)
-				x += snap.x
-	else:
-		var y := min(start.y, end.y)
-		var s := min(start.x, end.x)
-		var e := max(start.x, end.x)
-		for x in range(s, e, snap.x):
-			for _i in range(y_steps):
-				var point = Vector2(x, y)
-				points.append(point)
-				y += snap.y
+	var dist := ceil((end - start).length())
+	for i in range(dist):
+		var ratio := i / dist
+		var point := start.linear_interpolate(end, ratio).snapped(snap)
+		points.append(point)
 
 	points += [end]
 	return points

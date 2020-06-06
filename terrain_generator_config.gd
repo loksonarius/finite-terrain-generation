@@ -9,7 +9,7 @@ extends Node
 ## Constants
 ## Exports
 ## Public
-var terrain_seed: int = 6
+var terrain_seed: int = 1
 var width: int = 20
 var height: int = 10
 var biome_ids: Array = [0]
