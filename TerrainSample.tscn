@@ -1,14 +1,25 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://ViewCenter.gd" type="Script" id=1]
 [ext_resource path="res://terrain-tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://GeneratedTerrainTileMap.gd" type="Script" id=3]
+[ext_resource path="res://TerrainSample.gd" type="Script" id=4]
 
 [node name="TerrainSample" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="GeneratedTerrainTileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 format = 1
+tile_data = PoolIntArray( -1376299, 1, 0, -327259, 1, 0 )
 script = ExtResource( 3 )
-width = 128
-height = 64
+width = 256
+height = 256
+river_smoothing_factor = 6
+
+[node name="ViewCenter" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera2D" parent="ViewCenter"]
+current = true

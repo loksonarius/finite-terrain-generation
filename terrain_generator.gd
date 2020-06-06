@@ -82,7 +82,7 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 		if node == null:
 			continue
 		for _i in range(config.river_smoothing_factor):
-			_smooth_paths(node)
+			_smooth_paths(node, config.river_curving_factor)
 
 	# render river tiles on to terrain map
 	for item in river_trees:
@@ -177,7 +177,7 @@ static func _join_sources(tree: PointTreeNode, height: int) -> void:
 	tree.children = children
 
 
-static func _smooth_paths(tree: PointTreeNode) -> void:
+static func _smooth_paths(tree: PointTreeNode, shift_mult: float) -> void:
 	var new_children := []
 	for child in tree.children:
 		var node : PointTreeNode = child as PointTreeNode
@@ -185,12 +185,15 @@ static func _smooth_paths(tree: PointTreeNode) -> void:
 			continue
 
 		# smooth current node's children connections
-		_smooth_paths(node)
+		var shift_damp := 0.65
+		_smooth_paths(node, shift_mult * shift_damp)
 
 		# insert midpoint node between current node and parent
+		var shift := (randf() - 0.5) * shift_mult
 		var midpoint := tree.value.linear_interpolate(node.value, 0.5)
-		var x_dis := abs(tree.value.x - node.value.x) * (randf() - 0.5) * 0.30
-		midpoint.x += x_dis
+		var x_dist := min(abs(tree.value.x - node.value.x), 2)
+		var displacement := x_dist * shift * shift_mult
+		midpoint.x += displacement
 		var new_node := PointTreeNode.new()
 		new_node.value = midpoint
 		new_node.children.append(node)
@@ -210,6 +213,11 @@ static func _render_rivers(map: Array, river: PointTreeNode) -> void:
 
 		var points := _rasterize_line(start, end)
 		for point in points:
+			if point.y >= len(map) || point.x >= len(map[point.y]):
+				continue
+			if point.y < 0 || point.x < 0:
+				continue
+
 			var tile : Terrain = map[point.y][point.x] as Terrain
 			if tile == null:
 				continue
