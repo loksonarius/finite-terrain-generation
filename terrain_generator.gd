@@ -74,7 +74,7 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 		var node : PointTreeNode = item as PointTreeNode
 		if node == null:
 			continue
-		_join_sources(node, config.height)
+		_join_sources(node)
 
 	# smooth out river points by adding mid-points
 	for item in river_trees:
@@ -146,7 +146,7 @@ static func _generate_edge_points(max_count: int, start: Vector2, end: Vector2) 
 	return points
 
 
-static func _join_sources(tree: PointTreeNode, height: int) -> void:
+static func _join_sources(tree: PointTreeNode) -> void:
 	var children := []
 
 	# join node pairs while the current node has potential child pairs
