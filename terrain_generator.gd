@@ -26,6 +26,12 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	var points := river_path.detail_path(config.river_lod, config.terrain_seed)
 	_render_path(map, points)
 	
+	source = points[randi() % len(points)] as Vector2
+	exit = Vector2([0, config.width - 1][randi() % 2], rand_range(0, source.y))
+	river_path = PointPath.new(source, exit)
+	points = river_path.detail_path(config.river_lod, config.terrain_seed)
+	_render_path(map, points)
+	
 	return map
 
 
