@@ -16,6 +16,8 @@ var biome_ids: Array = [0]
 var river_lod: int = 2
 var lake_size: int = 5
 var max_lakes: int = 3
+var erosion_factor: int = 3
+var drain_factor: int = 2
 var max_biome_bubbles: int = 3
 
 ## Private
@@ -33,6 +35,8 @@ func validate() -> bool:
 		river_lod,
 		lake_size,
 		max_lakes,
+		erosion_factor,
+		drain_factor,
 		max_biome_bubbles,
 	]
 	for v in maxes:

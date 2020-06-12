@@ -50,9 +50,18 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 		for i in range(-s, s):
 			for j in range(-s, s):
 				var p := c + Vector2(i, j)
-				if p.x >= 0 && p.y >= 0 && p.x < config.width && p.y < config.height:
-					if randf() > 0.65:
-						map[p.y][p.x].has_water = true
+				if !_in_range(p.x, 0, config.width - 1):
+					continue
+				if !_in_range(p.y, 0, config.height - 1):
+					continue
+				if randf() > 0.75:
+					map[p.y][p.x].has_water = true
+	
+	for _i in range(config.erosion_factor):
+		_simulate_erosion(map)
+	
+	for _i in range(config.drain_factor):
+		_drain_puddles(map)
 	
 	return map
 
@@ -111,3 +120,40 @@ static func _rasterize_line(start: Vector2, end: Vector2) -> Array:
 	points += [end]
 	return points
 
+
+static func _in_range(i: float, start: float, end: float) -> bool:
+	return i >= start && i <= end
+
+
+static func _count_water_neighbors(map: Array, x: int, y: int) -> int:
+	var count := 0
+	for dx in range(-1,2):
+		for dy in range(-1,2):
+			var _x := dx + x
+			var _y := dy + y
+			if _in_range(_y, 0, len(map) - 1) && _in_range(_x, 0, len(map[_y]) - 1):
+				var tile: Terrain = map[_y][_x] as Terrain
+				if tile.has_water:
+					count += 1
+	return count
+
+
+static func _simulate_erosion(map: Array) -> void:
+	var to_fill := []
+	for y in range(len(map)):
+		for x in range(len(map[y])):
+			if !map[y][x].has_water && _count_water_neighbors(map, x, y) > 2:
+				to_fill.append(Vector2(x,y))
+	for i in to_fill:
+		var p: Vector2 = i as Vector2
+		map[p.y][p.x].has_water = true
+
+static func _drain_puddles(map: Array) -> void:
+	var to_drain := []
+	for y in range(len(map)):
+		for x in range(len(map[y])):
+			if map[y][x].has_water && _count_water_neighbors(map, x, y) < 2:
+				to_drain.append(Vector2(x,y))
+	for i in to_drain:
+		var p: Vector2 = i as Vector2
+		map[p.y][p.x].has_water = false

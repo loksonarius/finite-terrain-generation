@@ -12,10 +12,11 @@ script = ExtResource( 4 )
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 format = 1
-tile_data = PoolIntArray( -1376299, 1, 0, -327259, 1, 0 )
 script = ExtResource( 3 )
 width = 128
 height = 128
+lake_size = 16
+drain_factor = 3
 
 [node name="ViewCenter" type="Node2D" parent="."]
 script = ExtResource( 1 )
