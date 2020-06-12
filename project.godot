@@ -15,9 +15,9 @@ _global_script_classes=[ {
 "path": "res://GeneratedTerrainTileMap.gd"
 }, {
 "base": "Node",
-"class": "PointTreeNode",
+"class": "PointPath",
 "language": "GDScript",
-"path": "res://point_tree_node.gd"
+"path": "res://point_path.gd"
 }, {
 "base": "Node",
 "class": "Terrain",
@@ -36,7 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "GeneratedTerrainTileMap": "",
-"PointTreeNode": "",
+"PointPath": "",
 "Terrain": "",
 "TerrainGenerator": "",
 "TerrainGeneratorConfig": ""

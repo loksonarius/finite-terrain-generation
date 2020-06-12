@@ -13,9 +13,7 @@ var TerrainGenerator = load("res://terrain_generator.gd")
 export(int) var terrain_seed = 0
 export(int) var width = 32
 export(int) var height = 32
-export(int) var max_river_sources = 5
-export(int) var river_smoothing_factor = 3
-export(int) var river_curving_factor = 3.0
+export(int) var river_lod = 6
 
 ## Public
 ## Private
@@ -38,15 +36,14 @@ func _get_config() -> TerrainGeneratorConfig:
 		config.terrain_seed = terrain_seed
 	config.width = width
 	config.height = height
-	config.max_river_sources = max_river_sources
-	config.river_smoothing_factor = river_smoothing_factor
-	config.river_curving_factor = river_curving_factor
+	config.river_lod = river_lod
 	return config
+	
 
 func _generate_terrain() -> void:
 	var config := _get_config()
 	var terrain : Array = TerrainGenerator.generate_terrain(config)
-
+	
 	for x in range(config.width):
 		for y in range(config.height):
 			var tile : Terrain = terrain[y][x] as Terrain

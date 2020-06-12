@@ -13,9 +13,7 @@ var terrain_seed: int = 1
 var width: int = 20
 var height: int = 10
 var biome_ids: Array = [0]
-var max_river_sources: int = 5
-var river_smoothing_factor: int = 2
-var river_curving_factor: float = 3.0
+var river_lod: int = 2
 var max_lakes: int = 1
 var max_biome_bubbles: int = 3
 
@@ -24,5 +22,19 @@ var max_biome_bubbles: int = 3
 
 ## Virtual Methods
 ## Public Methods
+func validate() -> bool:
+	if width <= 0: return false
+	if height <= 0: return false
+	if len(biome_ids) == 0: return false
+	for id in biome_ids:
+		if (id as int) == null: return false
+	var maxes := [
+		river_lod,
+		max_lakes,
+		max_biome_bubbles,
+	]
+	for v in maxes:
+		if v < 0: return false
+	return true
 ## Private Methods
 
