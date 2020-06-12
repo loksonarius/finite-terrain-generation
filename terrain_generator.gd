@@ -32,6 +32,28 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	points = river_path.detail_path(config.river_lod, config.terrain_seed)
 	_render_path(map, points)
 	
+	var lake_centers := []
+	if randi() % 2 == 0:
+		lake_centers.append(points[randi() % len(points)])
+	
+	var lake_count = config.max_lakes - len(lake_centers)
+	if lake_count > 1:
+		lake_count = randi() % lake_count + 1
+	for _i in range(lake_count):
+		var x := randi() % config.width
+		var y := randi() % config.height
+		lake_centers.append(Vector2(x, y))
+	
+	var s := config.lake_size
+	for l in lake_centers:
+		var c: Vector2 = l as Vector2
+		for i in range(-s, s):
+			for j in range(-s, s):
+				var p := c + Vector2(i, j)
+				if p.x >= 0 && p.y >= 0 && p.x < config.width && p.y < config.height:
+					if randf() > 0.65:
+						map[p.y][p.x].has_water = true
+	
 	return map
 
 
@@ -88,3 +110,4 @@ static func _rasterize_line(start: Vector2, end: Vector2) -> Array:
 	
 	points += [end]
 	return points
+

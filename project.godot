@@ -48,6 +48,10 @@ config/name="finite-terrain-generation"
 run/main_scene="res://TerrainSample.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/height=1024
+
 [importer_defaults]
 
 texture={

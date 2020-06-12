@@ -14,6 +14,8 @@ export(int) var terrain_seed = 0
 export(int) var width = 32
 export(int) var height = 32
 export(int) var river_lod = 6
+export(int) var lake_size = 5
+export(int) var max_lakes = 3
 
 ## Public
 ## Private
@@ -37,6 +39,8 @@ func _get_config() -> TerrainGeneratorConfig:
 	config.width = width
 	config.height = height
 	config.river_lod = river_lod
+	config.lake_size = lake_size
+	config.max_lakes = max_lakes
 	return config
 	
 
