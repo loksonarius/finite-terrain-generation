@@ -5,9 +5,7 @@ extends Node
 # The possible configuration options for this class are exported as public
 # variables.
 
-## Enums
-## Constants
-## Exports
+
 ## Public
 var terrain_seed: int = 1
 var width: int = 20
@@ -21,10 +19,7 @@ var biomes: Array = [0]
 var biome_size: int = 8
 var biome_growth_factor: int = 8
 
-## Private
-## OnReady
 
-## Virtual Methods
 ## Public Methods
 func validate() -> bool:
 	if width <= 0: return false
@@ -45,5 +40,3 @@ func validate() -> bool:
 	for v in maxes:
 		if v < 0: return false
 	return true
-## Private Methods
-

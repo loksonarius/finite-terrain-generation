@@ -5,16 +5,15 @@ extends Node
 # Vector2's. It encompases operations around generating a nice "natural" looking
 # curved path between two points.
 
-## Enums
+
 ## Constants
 const MIN_SHIFT_RANGE = 0.4
 const MAX_SHIFT_RANGE = 0.8
-## Exports
+
 ## Public
 var _start: Vector2 = Vector2.ZERO
 var _end: Vector2 = Vector2.ZERO
 
-## Private
 
 ## Public Methods
 # Returns an Array of Vector2's denoting a path between the start and end points
@@ -42,6 +41,7 @@ func detail_path(lod: int, path_seed: int) -> Array:
 		points = _points
 	return points
 
+
 ## Private Methods
 func _pick_midpoint(a: Vector2, b: Vector2, rng: RandomNumberGenerator) -> Vector2:
 	var mid: Vector2 = lerp(a, b, 0.5)
@@ -49,6 +49,7 @@ func _pick_midpoint(a: Vector2, b: Vector2, rng: RandomNumberGenerator) -> Vecto
 	var tang := dis.tangent().normalized()
 	var shift := dis.length() * rng.randf_range(MIN_SHIFT_RANGE, MAX_SHIFT_RANGE)
 	return mid + tang * shift * (rng.randf() - 0.5)
+
 
 ## Overrides
 func _init(start := Vector2.ZERO, end := Vector2.ZERO):

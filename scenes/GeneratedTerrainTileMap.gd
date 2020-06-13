@@ -1,15 +1,12 @@
 #tool
 class_name GeneratedTerrainTileMap
 extends TileMap
-# docstring here
 
-## Signals
-## Enums
 ## Constants
-var TerrainGenerator = load("res://terrain_generator.gd")
+var TerrainGenerator = load("res://scripts/terrain_generator.gd")
+var TerrainGeneratorConfig = load("res://scripts/terrain_generator_config.gd")
 
 ## Exports
-
 export(int) var terrain_seed = 0
 export(int) var width = 32
 export(int) var height = 32
@@ -22,22 +19,21 @@ export(Array) var biomes = [0, 1, 2]
 export(int) var biome_size = 8
 export(int) var biome_growth_factor = 8
 
-## Public
-## Private
 ## OnReady
 onready var Decorations = $Decorations
 
 func _ready() -> void:
 	_generate_terrain()
 
-## Virtual Methods
+
 ## Public Methods
 func reload() -> void:
 	_generate_terrain()
 
+
 ## Private Methods
 func _get_config() -> TerrainGeneratorConfig:
-	var config := TerrainGeneratorConfig.new()
+	var config: TerrainGeneratorConfig = TerrainGeneratorConfig.new()
 	if terrain_seed == 0:
 		config.terrain_seed = OS.get_system_time_msecs()
 	else:
@@ -53,11 +49,11 @@ func _get_config() -> TerrainGeneratorConfig:
 	config.biome_size = biome_size
 	config.biome_growth_factor = biome_growth_factor
 	return config
-	
+
 
 func _generate_terrain() -> void:
 	var config := _get_config()
-	var terrain : Array = TerrainGenerator.generate_terrain(config)
+	var terrain: Array = TerrainGenerator.generate_terrain(config)
 	
 	Decorations.clear()
 	for x in range(config.width):

@@ -12,27 +12,27 @@ _global_script_classes=[ {
 "base": "TileMap",
 "class": "GeneratedTerrainTileMap",
 "language": "GDScript",
-"path": "res://GeneratedTerrainTileMap.gd"
+"path": "res://scenes/GeneratedTerrainTileMap.gd"
 }, {
 "base": "Node",
 "class": "PointPath",
 "language": "GDScript",
-"path": "res://point_path.gd"
+"path": "res://scripts/point_path.gd"
 }, {
 "base": "Node",
 "class": "Terrain",
 "language": "GDScript",
-"path": "res://terrain.gd"
+"path": "res://scripts/terrain.gd"
 }, {
 "base": "Node",
 "class": "TerrainGenerator",
 "language": "GDScript",
-"path": "res://terrain_generator.gd"
+"path": "res://scripts/terrain_generator.gd"
 }, {
 "base": "Node",
 "class": "TerrainGeneratorConfig",
 "language": "GDScript",
-"path": "res://terrain_generator_config.gd"
+"path": "res://scripts/terrain_generator_config.gd"
 } ]
 _global_script_class_icons={
 "GeneratedTerrainTileMap": "",
@@ -45,8 +45,8 @@ _global_script_class_icons={
 [application]
 
 config/name="finite-terrain-generation"
-run/main_scene="res://TerrainSample.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://scenes/TerrainSample.tscn"
+config/icon="res://GeneratedTileMap.png"
 
 [display]
 
@@ -105,29 +105,9 @@ ui_down={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
  ]
 }
-up={
+ui_home={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
- ]
-}
-down={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
- ]
-}
-left={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"unicode":0,"echo":false,"script":null)
- ]
-}
-right={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
- ]
-}
-shift={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777229,"unicode":0,"echo":false,"script":null)
  ]
 }
 reload={

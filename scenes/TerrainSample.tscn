@@ -1,18 +1,18 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://ViewCenter.gd" type="Script" id=1]
-[ext_resource path="res://terrain-tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://GeneratedTerrainTileMap.gd" type="Script" id=3]
-[ext_resource path="res://TerrainSample.gd" type="Script" id=4]
+[ext_resource path="res://tiles/terrain-tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://scenes/TerrainSample.gd" type="Script" id=2]
+[ext_resource path="res://scenes/ViewCenter.gd" type="Script" id=3]
+[ext_resource path="res://scenes/GeneratedTerrainTileMap.gd" type="Script" id=4]
 
 [node name="TerrainSample" type="Node2D"]
-script = ExtResource( 4 )
+script = ExtResource( 2 )
 
 [node name="GeneratedTerrainTileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 1 )
 cell_size = Vector2( 8, 8 )
 format = 1
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 width = 128
 height = 128
 lake_size = 16
@@ -20,12 +20,12 @@ drain_factor = 3
 biome_size = 20
 
 [node name="Decorations" type="TileMap" parent="GeneratedTerrainTileMap"]
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 1 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="ViewCenter" type="Node2D" parent="."]
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="Camera" type="Camera2D" parent="ViewCenter"]
 current = true

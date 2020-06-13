@@ -6,12 +6,6 @@ extends Node
 # The returned array should be accessed with result[y][x] where [0][0] refers to
 # the top-right corner of the map and 'y' refers to the row of the 2D map.
 
-## Signals
-## Enums
-## Constants
-## Exports
-## Public
-## Private
 
 ## Public Methods
 static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
@@ -68,7 +62,7 @@ static func generate_terrain(config: TerrainGeneratorConfig) -> Array:
 	
 	# create and grow biomes
 	var biome_centers := []
-	var _dist := max(config.width * config.height / 12, 3)
+	var _dist := max(config.width * config.height / 12.0, 3.0) as int
 	var biome_count := _dist * (len(config.biomes) - 1)
 	for _i in range(biome_count):
 		var x := randi() % config.width
