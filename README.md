@@ -2,6 +2,8 @@
 
 _Generate a "natural-looking" 2D, finite terrain on to a TileMap_
 
+![icon](GeneratedTileMap.png)
+
 ## Screenshots
 
 Sample terrains that were generated into a 1024 x 1024 TileMap:
