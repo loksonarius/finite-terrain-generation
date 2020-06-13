@@ -12,13 +12,14 @@ extends Node
 var terrain_seed: int = 1
 var width: int = 20
 var height: int = 10
-var biome_ids: Array = [0]
 var river_lod: int = 2
 var lake_size: int = 5
 var max_lakes: int = 3
 var erosion_factor: int = 3
 var drain_factor: int = 2
-var max_biome_bubbles: int = 3
+var biomes: Array = [0]
+var biome_size: int = 8
+var biome_growth_factor: int = 8
 
 ## Private
 ## OnReady
@@ -28,16 +29,18 @@ var max_biome_bubbles: int = 3
 func validate() -> bool:
 	if width <= 0: return false
 	if height <= 0: return false
-	if len(biome_ids) == 0: return false
-	for id in biome_ids:
+	if len(biomes) == 0: return false
+	for id in biomes:
 		if (id as int) == null: return false
+		if biomes.count(id) > 1: return false
 	var maxes := [
 		river_lod,
 		lake_size,
 		max_lakes,
 		erosion_factor,
 		drain_factor,
-		max_biome_bubbles,
+		biome_size,
+		biome_growth_factor,
 	]
 	for v in maxes:
 		if v < 0: return false

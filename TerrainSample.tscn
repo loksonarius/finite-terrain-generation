@@ -17,6 +17,12 @@ width = 128
 height = 128
 lake_size = 16
 drain_factor = 3
+biome_size = 20
+
+[node name="Decorations" type="TileMap" parent="GeneratedTerrainTileMap"]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 8, 8 )
+format = 1
 
 [node name="ViewCenter" type="Node2D" parent="."]
 script = ExtResource( 1 )

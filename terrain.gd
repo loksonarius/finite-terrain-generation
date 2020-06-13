@@ -9,6 +9,7 @@ extends Node
 ## Exports
 ## Public
 var biome_id: int
+var decoration: float
 var has_water: bool
 
 ## Private
